@@ -6,7 +6,7 @@ var request = require('./../index'),
 describe('my-request test case' , function() {
   describe('#get example' , function() {
     it('Should return hello world' , function(done) {
-      request('http://alonso-thoughtsapi.rhcloud.com/')
+      request('http://alonso-thoughtsapi.rhcloud.com')
         .get('/')
         .end(function(res) {
           should(res).be.an.Object;
@@ -16,7 +16,7 @@ describe('my-request test case' , function() {
         });
     });
     it('Should return an array with lenght of 1' , function(done) {
-      request('http://alonso-thoughtsapi.rhcloud.com/')
+      request('http://alonso-thoughtsapi.rhcloud.com')
         .get('/blogs')
         .end(function(res) {
           should(res).be.an.Object;
