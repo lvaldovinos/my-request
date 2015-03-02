@@ -1,0 +1,28 @@
+{
+  "name": "my-request",
+  "version": "1.0.0",
+  "description": "Request module based on superagent and supertest",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lvaldovinos/my-request.git"
+  },
+  "keywords": [
+    "request",
+    "superagent",
+    "supertest"
+  ],
+  "author": "Luis Valdovinos",
+  "license": "MIT",
+  "dependencies": {
+    "methods": "^1.1.1",
+    "superagent": "^0.21.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "should": "^5.0.1"
+  }
+}
