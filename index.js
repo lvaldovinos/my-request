@@ -35,5 +35,14 @@ myRequest.init = function init(url) {
     return myObj;
   };
   
+  myObj.unsetPermanent = function() {
+    methods.forEach(function(method) {
+      myObj[method] = function(path) {
+        return new Request(url , method , path);
+      };
+    });
+    return myObj;
+  };
+  
   return myObj;
 };
