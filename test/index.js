@@ -39,23 +39,35 @@ describe('my-request test case' , function() {
       myRequest.get('/').req._headers.authorization.should.be.exactly(myRequest.get('/blogs').req._headers.authorization);
       
     });
-    it('Should set another header' , function() {
+    it('Should set another header' , function(done) {
       var myRequest = request.init('http://alonso-thoughtsapi.rhcloud.com');
       myRequest.setPermanent({ Authorization : 'example-token' });
       
       myRequest
         .get('/')
         .set('Localization' , 'Example').req._headers.should.have.properties(['authorization' , 'localization']);          
-        
+      
+      myRequest
+        .get('/')
+        .end(function(res) {
+          res.req._headers.authorization.should.be.exactly('example-token');
+          done();
+        });
     });
   });
   describe('#unsetPermanent' , function() {
-    it('Should remove all permanent header' , function() {
+    it('Should remove all permanent header' , function(done) {
       var myRequest = request.init('http://alonso-thoughtsapi.rhcloud.com');
       myRequest.setPermanent({ Authorization : 'example-token',
                                Localization : 'example-loc' });
       myRequest.unsetPermanent();
       should(myRequest.get('/').req).not.be.ok; 
+      myRequest
+        .get('/')
+        .end(function(res) {
+          res.req._headers.should.not.have.properties('authorization' , 'localization');
+          done();
+        });
     });
     it('Should remove only one permanent header' , function() {
       var myRequest = request.init('http://alonso-thoughtsapi.rhcloud.com');
