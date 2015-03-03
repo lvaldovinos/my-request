@@ -1,10 +1,12 @@
 'use strict';
 
 var methods = require('methods'),
-    Request = require('./lib/my-request');
+    Request = require('./lib/my-request'),
+    _ = require('underscore'),
+    myRequest = exports;
     
-module.exports = function(url) {
-  var myRequest = {};
+myRequest.init = function init(url) {
+  var myObj = {};
   if (!url) {
     url = 'http://localhost'
   }
@@ -15,10 +17,23 @@ module.exports = function(url) {
   };
   
   methods.forEach(function(method) {
-    myRequest[method] = function(path) {
+    myObj[method] = function(path) {
       return new Request(url , method , path);
     };
   });
   
-  return myRequest;
+  myObj.setPermanent = function(header) {
+    if (!_.isObject(header)) throw {
+      name : 'Invalid Parameter',
+      message : '@header MUST be an object'
+    };
+    methods.forEach(function(method) {
+      myObj[method] = function(path) {
+        return new Request(url , method , path , header);
+      };
+    });
+    return myObj;
+  };
+  
+  return myObj;
 };
