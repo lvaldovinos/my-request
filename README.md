@@ -3,22 +3,88 @@ Request module based on superagent and supertest
 
 <h2>Installation</h2>
 
-  git clone https://github.com/lvaldovinos/my-request.git<br/>
-  cd my-request<br/>
-  npm pack<br/>
-  npm install my-request-1.0.0.tgz<br/>
+  <code>
+    npm install my-request
+  </code>
 
 <h2>Example code</h2>
 
-<p>Inspired by Supertest and Superagent, my-request uses the same logic than supertest to do a reuest <strong>example:</strong></p>
+<p>Inspired by Supertest and Superagent, my-request uses the same logic than supertest to do a request <strong>example:</strong></p>
 
 ```javascript
-  var request = require('my-request');
+  var request = require('my-request'),
+      myRequest = request.init('http://alonso-thoughtsapi.rhcloud.com');
   
-  request('http://alonso-thoughtsapi.rhcloud.com')
+  myRequest
     .get('/')
     .end(function(res) {
       console.log(res.body); // { hello: 'world' }
+    });
+```
+
+<h2>API</h2>
+
+<h4>#setPermanent(header)</h4>
+
+<p>
+  Method that helps you set a header permanently, you set the header once, and it will remain on next requests
+</p>
+
+<strong>Arguments</strong>
+
+<p><code>header</code> This is an object like this one:</p>
+
+```json
+  { "Authorization" : "Bearer dasasdas123qasd1.12312asdads12.da123",
+    "Localization" : "http://www.example.com/resource/id"
+  }
+```
+
+<strong>Example</strong>
+```javascript
+  var request = require('my-request'),
+      myRequest = request.init('http://alonso-thoughtsapi.rhcloud.com');
+  
+  myRequest
+    .setPermanent({ Authorization : 'example-token' })
+    .get('/')
+    .end(function(res) {
+      console.log(res.req._headers.authorization); //'example-token'
+    });
+    
+  myRequest
+    .get('/blogs')
+    .end(function(res) {
+      console.log(res.req._headers.authorization); //'example-token'
+    });
+```
+
+<h4>#unsetPermanent()</h4>
+
+<p>
+  Method that removes all permanent headers.
+</p>
+
+<strong>Example</strong>
+```javascript
+  var request = require('my-request'),
+      myRequest = request.init('http://alonso-thoughtsapi.rhcloud.com');
+  
+  myRequest
+    .setPermanent({ Authorization : 'example-token',
+                    Localization : 'example-loc' })
+    .get('/')
+    .end(function(res) {
+      console.log(res.req._headers.authorization); //'example-token'
+      console.log(res.req._headers.localization); //'example-loc'
+    });
+    
+  myRequest.unsetPermanent();
+  myRequest
+    .get('/blogs')
+    .end(function(res) {
+      console.log(res.req._headers.authorization); //'undefined'
+      console.log(res.req._headers.localization); //'undefined'
     });
 ```
 
